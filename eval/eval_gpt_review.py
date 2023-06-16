@@ -129,7 +129,7 @@ if __name__ == "__main__":
         threeclass_suff = "_threeclass" if 'threeclass' in args.prompt_file else ""
         dest = os.path.join(
             args.output_review_file,
-            '_vs_'.join([elt.split('/')[-1].replace('.jsonl', '') for elt in args.answer_file_list]) + f'_{args.model}_reviewer{threeclass_suff}' + '.jsonl'
+            '-vs-'.join([elt.split('/')[-1].replace('.jsonl', '') for elt in args.answer_file_list]) + f'-{args.model}-reviewer{threeclass_suff}' + '.jsonl'
         )
 
     # ray.init()
