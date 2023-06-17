@@ -112,7 +112,6 @@
     Question:
   </h2>
   <div id="question">
-    ${question}
   </div>
   <div id="data" hidden>
     {
@@ -132,8 +131,10 @@
 </crowd-form>
 
 <script>
-  const startTime = new Date();
   const data = JSON.parse($('#data').text());
+  $('#question').text(data.question.text);
+
+  const startTime = new Date();
 
   const buttonBar = $('#btn-bar');
 
