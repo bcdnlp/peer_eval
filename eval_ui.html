@@ -402,7 +402,7 @@
     tab_areas.forEach(function (area, idx) {
       if (idx === 0) return;
       const metrics = {
-        response: data.responses[idx - 1],
+        responseIdx: idx - 1,
         scores: {},
       };
 
@@ -425,8 +425,8 @@
       const idxB = $this.attr('idxB');
 
       save_record.pairwise.push({
-        responseA: data.responses[idxA - 1],
-        responseB: data.responses[idxB - 1],
+        responseAIdx: idxA - 1,
+        responseBIdx: idxB - 1,
         value: $this.val(),
       })
     })
