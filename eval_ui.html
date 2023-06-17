@@ -98,12 +98,12 @@
 <crowd-form>
   <div>
     <h1>Task</h1>
-    We would like to request your feedback on the performance of two AI assistants in response to the user question
+    We would like to request your feedback on the performance of several AI assistants in response to the user question
     displayed below.
     <br><br>
     Please consider the helpfulness, relevance, accuracy, level of details of their responses.
     <br><br>
-    Please choose the best response, avoiding any potential bias, ensuring that the order in which the responses were
+    Then look at the pairwise comparisons and choose the best response, avoiding any potential bias, ensuring that the order in which the responses were
     presented does not affect your judgment.
   </div>
   <div id="timer">
@@ -114,16 +114,7 @@
   <div id="question">
   </div>
   <div id="data" hidden>
-    {
-      "question": {
-        "text": "QUESTION TEXT"
-      },
-      "responses": [
-        {"id":1,  "text":"RESPONSE 1"},
-        {"id":2,  "text":"RESPONSE 2"}
-      ],
-      "metrics": ["Xtreme", "Yahoo", "Zeta"]
-    }
+    ${data}
   </div>
   <div class="mg-10">
     <div id="btn-bar"></div>
@@ -315,16 +306,16 @@
   const make_comparison = function (idxA, idxB) {
     const name = idxA + '-vs-' + idxB;
 
-    const make_radiobtn = function (letter) {
+    const make_radiobtn = function (val) {
       const radiobtn =
         $('<input>')
           .attr({
             type: 'radio',
-            id: name + '-' + letter,
+            id: name + '-' + val,
             name: name,
             idxA: idxA,
             idxB: idxB,
-            value: letter,
+            value: val,
           })
           .addClass('pairwise')
       return radiobtn;
@@ -340,9 +331,9 @@
     const labelC = $('<label>').attr({ for: name + '-c', })
       .text('The responses are EXACTLY equal in quality.');
 
-    const spanA = $('<span>').append(make_radiobtn('a')).append(labelA);
-    const spanB = $('<span>').append(make_radiobtn('b')).append(labelB);
-    const spanC = $('<span>').append(make_radiobtn('c')).append(labelC);
+    const spanA = $('<span>').append(make_radiobtn(1)).append(labelA);
+    const spanB = $('<span>').append(make_radiobtn(2)).append(labelB);
+    const spanC = $('<span>').append(make_radiobtn(3)).append(labelC);
 
     const showHideBtn =
       $('<button>')
