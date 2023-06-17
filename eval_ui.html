@@ -115,6 +115,9 @@
   </div>
   <div id="data" hidden>
     {
+      "question": {
+        "text": "QUESTION TEXT"
+      },
       "responses": [
         {"id":1,  "text":"RESPONSE 1"},
         {"id":2,  "text":"RESPONSE 2"}
@@ -322,7 +325,6 @@
             idxA: idxA,
             idxB: idxB,
             value: letter,
-            required: true,
           })
           .addClass('pairwise')
       return radiobtn;
