@@ -12,7 +12,7 @@ def get_json_list(file_path):
         return [json.loads(line) for line in f]
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="ChatGPT-based QA evaluation.")
+    parser = argparse.ArgumentParser(description="Merge Question and Answer files to create Mturk input file.")
     parser.add_argument("-q", "--question-file")
     parser.add_argument("-a", "--answer-file-list", nargs="+", default=[])
     parser.add_argument("-m", "--metrics", nargs="*", default=[])
