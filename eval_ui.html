@@ -103,7 +103,8 @@
     <br><br>
     Please consider the helpfulness, relevance, accuracy, level of details of their responses.
     <br><br>
-    Then look at the pairwise comparisons and choose the best response, avoiding any potential bias, ensuring that the order in which the responses were
+    Then look at the pairwise comparisons and choose the best response, avoiding any potential bias, ensuring that the
+    order in which the responses were
     presented does not affect your judgment.
   </div>
   <div id="timer">
@@ -121,7 +122,8 @@
     <div id="tab-area-container"></div>
   </div>
   <button id="submit-btn" class="big-btn" type="submit" class="mg-10" onclick="submit_results()">Submit Results</button>
-  <button id="copy-data-btn" class="big-btn" type="button" class="mg-10" onclick="copyData()">Copy Data To Clipboard (Paste into Google Doc for Safekeeping)</button>
+  <button id="copy-data-btn" class="big-btn" type="button" class="mg-10" onclick="copyData()">Copy Data To Clipboard
+    (Paste into Google Doc for Safekeeping)</button>
 </crowd-form>
 
 <script>
@@ -206,13 +208,13 @@
 
     table.append(
       $('<tr>')
-      .append($('<td>'))
-      .append(
-        $('<td>')
+        .append($('<td>'))
         .append(
-          $('<datalist>')
-            .attr({ id: 'metric-scale' })
-            .html(`
+          $('<td>')
+            .append(
+              $('<datalist>')
+                .attr({ id: 'metric-scale' })
+                .html(`
               <option value="0">0</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -225,15 +227,14 @@
               <option value="9">9</option>
               <option value="10">10</option>
             `)
+            )
         )
-      )
     )
-    
 
     tab_area.append(table);
 
     // area for explanations
-    const explanation_area = 
+    const explanation_area =
       $('<input>')
         .attr({
           type: 'text',
@@ -242,7 +243,7 @@
           placeholder: 'Please explain your choice.',
         })
         .addClass('mg-10')
-    
+
     tab_area.append(explanation_area);
 
     return tab_area;
@@ -277,6 +278,16 @@
             )
             .append($('<p>').attr({ id: 'response-b' }))
         )
+        .append(
+          $('<span>')
+            .addClass('inner-container')
+            .append(
+              $('<h2>').text("GPT4's Review for Guidance: ")
+            )
+            .append(
+              $('<p>').attr({ id: 'gpt4-review' })
+            )
+        )
 
     tab_area.append(comparison_area);
 
@@ -295,12 +306,26 @@
   let cur_comparison_showhidebtn = null;
 
   const displayResponseComparison = function (idxA, idxB) {
-    const responseA = data.responses[idxA - 1].text;
-    const responseB = data.responses[idxB - 1].text;
+    // index parameters are one's based
+    const responseA = data.responses[idxA - 1];
+    const responseB = data.responses[idxB - 1];
+    const gpt_review = data.automated_reviews.find(review => {
+      return review.answer1_id === responseA.response_id && review.answer2_id === responseB.response_id;
+    });
+
     $('#response-a-header').text('Response ' + idxA);
     $('#response-b-header').text('Response ' + idxB);
-    $('#response-a').text(responseA);
-    $('#response-b').text(responseB);
+    $('#response-a').text(responseA.text);
+    $('#response-b').text(responseB.text);
+    $('#gpt4-review').text(gpt_review?.text ?? "No review available.")
+  }
+
+  const emptyResponseComparison = function () {
+    $('#response-a-header').text('Response A');
+    $('#response-b-header').text('Response B');
+    $('#response-a').text('');
+    $('#response-b').text('');
+    $('#gpt4-review').text('');
   }
 
   const make_comparison = function (idxA, idxB) {
@@ -313,27 +338,35 @@
             type: 'radio',
             id: name + '-' + val,
             name: name,
-            idxA: idxA,
-            idxB: idxB,
             value: val,
           })
-          .addClass('pairwise')
+          .addClass('pairwise-threeclass')
       return radiobtn;
     }
 
     // labels
-    const labelA = $('<label>').attr({ for: name + '-a', })
+    const labelA = $('<label>').attr({ for: name + '-1', })
       .text('Response ' + idxA + ' is better.');
 
-    const labelB = $('<label>').attr({ for: name + '-b', })
+    const labelB = $('<label>').attr({ for: name + '-2', })
       .text('Response ' + idxB + ' is better.');
 
-    const labelC = $('<label>').attr({ for: name + '-c', })
+    const labelC = $('<label>').attr({ for: name + '-3', })
       .text('The responses are EXACTLY equal in quality.');
 
     const spanA = $('<span>').append(make_radiobtn(1)).append(labelA);
     const spanB = $('<span>').append(make_radiobtn(2)).append(labelB);
     const spanC = $('<span>').append(make_radiobtn(3)).append(labelC);
+
+    const explanation_area =
+      $('<input>')
+        .attr({
+          type: 'text',
+          placeholder: 'Please explain your choice.',
+        })
+        .addClass('mg-10')
+        .addClass('pairwise-explanation')
+    explanation_area.hide();
 
     const showHideBtn =
       $('<button>')
@@ -345,19 +378,34 @@
         .addClass('mg-10')
         .text('Click to Show Responses')
         .on('click', function (event) {
-          console.log('button ' + name + ' clicked')
           if (cur_comparison_showhidebtn !== null) {
-            cur_comparison_showhidebtn.text('Click to Show Responses');
+            if (cur_comparison_showhidebtn.is(showHideBtn)) {
+              cur_comparison_showhidebtn.text('Click to Show Responses');
+              explanation_area.hide();
+              emptyResponseComparison();
+              return;
+            } else {
+              cur_comparison_showhidebtn.text('Click to Show Responses');
+            }
           }
           cur_comparison_showhidebtn = showHideBtn;
           cur_comparison_showhidebtn.text('Click to Hide Responses');
+          explanation_area.show();
           displayResponseComparison(idxA, idxB);
         })
 
+
     return $('<div>')
+      .addClass('comparison')
+      .attr({
+          id: name,
+          idxA: idxA,
+          idxB: idxB,
+      })
       .append(showHideBtn)
       .append('Compare Responses ' + idxA + ' and ' + idxB + ': ')
-      .append(spanA).append(spanB).append(spanC);
+      .append(spanA).append(spanB).append(spanC)
+      .append(explanation_area);
   }
 
   const make_metric_tab_button = function (idx) {
@@ -412,7 +460,7 @@
     })
 
     // for overall
-    tab_areas[0].find('.pairwise').each(function () {
+    tab_areas[0].find('.comparison').each(function () {
       const $this = $(this);
       const idxA = $this.attr('idxA');
       const idxB = $this.attr('idxB');
@@ -420,7 +468,8 @@
       save_record.pairwise.push({
         responseAIdx: idxA - 1,
         responseBIdx: idxB - 1,
-        value: $this.val(),
+        value: $this.find('.pairwise-threeclass:checked').val(),
+        explanation: $this.find('.pairwise-explanation').val(),
       })
     })
 
@@ -428,7 +477,7 @@
 
   const submit_results = function () {
     save_all();
-    
+
     // avoid interference by crowd-elements.js
     $('#tab-area').detach();
 
