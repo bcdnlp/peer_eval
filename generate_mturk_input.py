@@ -3,8 +3,6 @@ import json
 import os
 import csv
 
-from tqdm import tqdm
-
 import numpy as np
 import os
 
@@ -46,7 +44,7 @@ if __name__ == "__main__":
 
     tasks = []
 
-    for _, (question, *answers) in tqdm(enumerate(zip(question_jsons, *answer_jsons)), total=total_len):
+    for question, *answers in zip(question_jsons, *answer_jsons):
         assert all(
             question[args.id_key]
             == a[args.id_key]
