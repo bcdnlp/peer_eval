@@ -3,4 +3,5 @@ gpt3.5_turbo_0301_responses1.txt
 *.json
 *.env
 tags
+*/keys/
 
