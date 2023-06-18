@@ -1,11 +1,8 @@
 import argparse
 import json
-import os
 import csv
 from pathlib import Path
-
 import numpy as np
-import os
 
 def get_json_list(file_path):
     file_path = Path(file_path).expanduser()
@@ -24,14 +21,13 @@ def get_review_jsons(review_dir, answer_file_list):
             review_filepath = review_path / f"{fileA.stem}-vs-{fileB.stem}-gpt-4-reviewer-threeclass.jsonl"
             if review_filepath.exists():
                 jsons.append(get_json_list(review_filepath))
-
-
+    return jsons
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Merge Question and Answer files to create Mturk input file.")
     parser.add_argument("-q", "--question-file")
     parser.add_argument("-a", "--answer-file-list", nargs="+", default=[])
-    parser.add_argument("-r", "--review-dir", default="ratings-gpt4")
+    parser.add_argument("-r", "--review-dir", default="./eval/ratings-gpt4/")
     parser.add_argument("-m", "--metrics", nargs="*", default=[])
     parser.add_argument("-o", "--output-review-file", default='mturk_inputs/mturk_input.csv')
     parser.add_argument("-id", "--id-key", default='question_id')
