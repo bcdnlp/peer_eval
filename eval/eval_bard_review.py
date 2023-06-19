@@ -25,7 +25,7 @@ import vertexai
 from vertexai.preview.language_models import TextGenerationModel
 
 MAX_API_RETRY = 1000
-REQ_TIME_GAP = 1
+REQ_TIME_GAP = 2
 
 
 # @ray.remote(num_cpus=4)
@@ -33,10 +33,10 @@ def get_eval(
     sys_prompt: str,
     user_prompt: str,
     ):
-    project_id = "white-dynamo-389517"
-    temperature = 0.8
+    project_id = "white-dynamo-389517" 
+    temperature = 0.7 #google default metadata https://developers.generativeai.google/models/language
     max_decode_steps = 1024
-    top_p = 1 #An alternative to sampling with temperature, called nucleus sampling
+    top_p = 0.95 #An alternative to sampling with temperature, called nucleus sampling
     top_k = 40
     location = "us-central1"
 
