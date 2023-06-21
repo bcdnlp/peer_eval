@@ -87,8 +87,9 @@
   </div>
   <crowd-button form-action="submit"></crowd-button>
   <div>
-    <button id="submit-btn" class="big-btn" type="button" class="mg-10" onclick="submit_results()">Submit Results</button>
+    <button id="next-btn" class="big-btn" type="button" class="mg-10" onclick="next_tab()">Next Tab</button>
     <button id="save-btn" class="big-btn" type="button" class="mg-10" onclick="save_all()">Save Results</button>
+    <button id="submit-btn" class="big-btn" type="button" class="mg-10" onclick="submit_results()">Submit Results</button>
   </div>
   <div>
     Saved data in JSON format:
@@ -110,7 +111,18 @@
 
   let tab_no = 0;
 
+  const next_tab = function() {
+    moveToTab((tab_no + 1) % tab_areas.length);
+  }
+
   const moveToTab = function (tabno) {
+    if (tabno === 0) {
+      $('#next-btn').hide();
+      $('#submit-btn').show();
+    } else {
+      $('#next-btn').show();
+      $('#submit-btn').hide();
+    }
     tab_no = tabno;
     $('#tab-area').detach();
     $('#tab-area-container').append(tab_areas[tab_no]);
@@ -210,6 +222,8 @@
           id: 'explanation',
           name: 'explanation',
           placeholder: 'Please explain your choice.',
+          rows: 5,
+          cols: 150,
         })
         .addClass('mg-10')
 
@@ -342,6 +356,8 @@
       $('<textarea>')
         .attr({
           placeholder: 'Please explain your choice.',
+          rows: 5,
+          cols: 150
         })
         .addClass('mg-10')
         .addClass('pairwise-explanation')
@@ -503,6 +519,7 @@
 
 
   const setup = function () {
+    $('#submit-btn').hide();
     // add metric tabs
     data.responses.forEach(function (_, idx) {
       const tab_area = make_metric_tab_area(idx + 1);
@@ -526,6 +543,8 @@
       const [elapsed_hrs, mins] = [elapsed_mins / 60, elapsed_mins % 60];
       $('#timer').text('Elapsed Time: ' + elapsed_hrs.toFixed(0) + ':' + mins.toFixed(0) + ':' + secs.toFixed(0));
     }, 1000);
+
+    moveToTab(1);
   }
 
   setup();
