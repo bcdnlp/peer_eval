@@ -1,6 +1,7 @@
 import argparse
 import json
 import csv
+import glob
 from pathlib import Path
 import numpy as np
 
@@ -18,9 +19,11 @@ def get_review_jsons(review_dir, answer_file_list):
             fileB = Path(fileB).expanduser()
             if fileA.name == fileB.name:
                 continue
-            review_filepath = review_path / f"{fileA.stem}-vs-{fileB.stem}-gpt-4-reviewer-threeclass.jsonl"
-            if review_filepath.exists():
+            try:
+                review_filepath = glob.glob(str(review_path) + f"/{fileA.stem}-vs-{fileB.stem}-gpt-4-reviewer*.jsonl")[0]
                 jsons.append(get_json_list(review_filepath))
+            except Exception:
+                print("Problem at: ", fileA.stem, fileB.stem)
     return jsons
 
 if __name__ == "__main__":
