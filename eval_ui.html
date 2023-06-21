@@ -86,10 +86,14 @@
     <div id="tab-area-container"></div>
   </div>
   <crowd-button form-action="submit"></crowd-button>
-  <button id="submit-btn" class="big-btn" type="button" class="mg-10" onclick="submit_results()">Submit Results</button>
-  <button id="save-btn" class="big-btn" type="button" class="mg-10" onclick="save_all()">Save Results</button>
-  Saved data in JSON format:
-  <textarea id="data-save-area" readonly></textarea>
+  <div>
+    <button id="submit-btn" class="big-btn" type="button" class="mg-10" onclick="submit_results()">Submit Results</button>
+    <button id="save-btn" class="big-btn" type="button" class="mg-10" onclick="save_all()">Save Results</button>
+  </div>
+  <div>
+    Saved data in JSON format:
+    <textarea id="data-save-area" readonly></textarea>
+  </div>
 </crowd-form>
 
 <script>
@@ -525,10 +529,4 @@
   }
 
   setup();
-</script>
-
-<script>
-  $(document).ready(function () {
-    $('span.emoji-bytes').each(displayEmoji);
-  });
 </script>
