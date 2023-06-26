@@ -13,3 +13,10 @@ agg = aggregate_raters(data)
 result = fleiss_kappa(agg[0], method='fleiss')
 print(result)
 
+# Accuracy
+# two-way pairwise comparison
+agree_1_2 = np.sum(data[:, 0] == data[:, 1])
+agree_1_3 = np.sum(data[:, 0] == data[:, 2])
+agree_2_3 = np.sum(data[:, 1] == data[:, 2])
+print((agree_1_2 + agree_1_3 + agree_2_3) / (3 * len(data)))
+
