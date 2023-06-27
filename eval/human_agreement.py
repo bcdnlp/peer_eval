@@ -14,7 +14,7 @@ result = fleiss_kappa(agg[0], method='fleiss')
 print(result)
 
 # Accuracy
-# two-way pairwise comparison
+# three-way pairwise comparison
 agree_1_2 = np.sum(data[:, 0] == data[:, 1])
 agree_1_3 = np.sum(data[:, 0] == data[:, 2])
 agree_2_3 = np.sum(data[:, 1] == data[:, 2])
