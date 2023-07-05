@@ -41,8 +41,9 @@ def get_eval(sys_prompt, user_prompt: str, max_tokens: int, model: str):
                            temperature=0.2,
                            )
             break
-        except:
+        except Exception as e:
             time.sleep(2)
+            print(e)
             print('Errrrrrrrrrrrrrrrrrr')
             print(response['error'])
 
