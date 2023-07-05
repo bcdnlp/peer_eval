@@ -17,6 +17,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
+#with open('keys/openai_key', 'r') as f:
+#    openai.api_key = f.readline().strip()
+#
+#with open('keys/openai_org_id', 'r') as f:
+#    openai.organization = f.readline().strip()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
