@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GEN_PATH=./eval/generations/vicuna
+GEN_PATH=../eval/generations/vicuna
 
 python ./generate_mturk_input.py \
     -q ./eval/prompts/vicuna_questions.jsonl \

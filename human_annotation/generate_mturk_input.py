@@ -30,7 +30,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Merge Question and Answer files to create Mturk input file.")
     parser.add_argument("-q", "--question-file")
     parser.add_argument("-a", "--answer-file-list", nargs="+", default=[])
-    parser.add_argument("-r", "--review-dir", default="./eval/ratings-gpt4/")
+    parser.add_argument("-r", "--review-dir", default="../eval/ratings-gpt4/")
     parser.add_argument("-m", "--metrics", nargs="*", default=[])
     parser.add_argument("-o", "--output-review-file", default='mturk_inputs/mturk_input.csv')
     parser.add_argument("-id", "--id-key", default='question_id')
